@@ -1,5 +1,7 @@
-import {Component, OnInit, VERSION} from '@angular/core';
+import {Component, ElementRef, OnInit, VERSION, ViewChild} from '@angular/core';
 import {MidiFileService} from "./service/midi-file.service";
+import {MidiFileModel} from "./service/midi-file.model";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'my-app',
@@ -8,13 +10,36 @@ import {MidiFileService} from "./service/midi-file.service";
 })
 export class AppComponent implements OnInit {
 
-  constructor(private midiFileService: MidiFileService) {
+  constructor(private midiFileService: MidiFileService, private sanitizer: DomSanitizer) {
   }
   name = 'Angular ' + VERSION.major;
 
-  ngOnInit(): void {
-    console.log(this.midiFileService.intToOctets(844,8,3));
-    console.log(this.midiFileService.intToOctets(63433,8,3));
-    console.log(this.midiFileService.intToOctets(1263433,8,1));
+  midi: Blob;
+  sample: MidiFileModel = {
+    name: 'Sample',
+    speed: 500000,
+    format: 1,
+    deltaTimeTicks: 46,
+    numberOfTracks: 1
+  };
+
+  download() {
+    return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.midi));
   }
+
+  ngOnInit(): void {
+
+    const logger = (content: string) => {
+      const hexArr = this.midiFileService.stringToChars(content).map(c => ('0' + c.toString(16)).slice(-2));
+
+      console.log(hexArr);
+    }
+    const reader = new FileReader();
+    reader.onload = function() {
+      logger(reader.result as string);
+    }
+    this.midi = this.midiFileService.createMidiFile(this.sample);
+    reader.readAsText(this.midi);
+
+  };
 }
