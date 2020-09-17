@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, VERSION, ViewChild} from '@angular/core';
 import {MidiFileService} from "./service/midi-file.service";
 import {MidiFileModel} from "./service/midi-file.model";
-import {DomSanitizer} from "@angular/platform-browser";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'my-app',
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     numberOfTracks: 1
   };
 
-  download() {
+  get download(): SafeUrl {
     return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.midi));
   }
 
