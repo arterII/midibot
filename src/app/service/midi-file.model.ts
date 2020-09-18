@@ -13,7 +13,7 @@ export interface MidiNoteEvent {
 }
 
 export interface MidiTrackModel {
-    name: string;
+    name?: string;
     instrument: MidiInstrument;
     channel: number;
     events: MidiNoteEvent[];

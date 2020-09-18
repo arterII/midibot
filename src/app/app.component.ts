@@ -1,6 +1,6 @@
-import {Component, ElementRef, OnInit, VERSION, ViewChild} from '@angular/core';
+import {Component, OnInit, VERSION} from '@angular/core';
 import {MidiFileService} from "./service/midi-file.service";
-import {MidiFileModel} from "./service/midi-file.model";
+import {MidiFileModel, MidiInstrument} from "./service/midi-file.model";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
@@ -15,18 +15,34 @@ export class AppComponent implements OnInit {
   name = 'Angular ' + VERSION.major;
 
   midi: Blob;
+
   sample: MidiFileModel = {
     name: 'Sample',
     speed: 500000,
     format: 1,
-    deltaTimeTicks: 46,
-    numberOfTracks: 1,
+    deltaTimeTicks: 48,
+    numberOfTracks: 2,
     timeSignature: {
       numerator: 4,
       denominator: 2,
       metronomeTicks: 46,
       note32ndToQuarter: 8
-    }
+    },
+    tracks: [
+      {
+        name: 'Piano Track',
+        instrument: MidiInstrument.PIANO,
+        channel: 2,
+        events: [
+          { delta: 0, key: 108, velocity: 200 },
+          { delta: 48, key: 108, velocity: 0 },
+          { delta: 48, key: 110, velocity: 180 },
+          { delta: 96, key: 110, velocity: 0 },
+          { delta: 96, key: 112, velocity: 160 },
+          { delta: 144, key: 112, velocity: 0 },
+        ]
+      }
+    ]
   };
 
   get download(): SafeUrl {

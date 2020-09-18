@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import {MidiFileModel, TimeSignature} from "./midi-file.model";
+import {MidiFileModel, MidiNoteEvent, MidiTrackModel, TimeSignature} from "./midi-file.model";
 
 @Injectable()
 export class MidiFileService {
@@ -97,6 +97,32 @@ export class MidiFileService {
         return this.createMidiTrack(data);
     }
 
+    createNoteEvent(channel, firstEvent: boolean, note: MidiNoteEvent) {
+        const data: number[] = [];
+        data.push(...this.encodeVLQ7(note.delta));
+        if(firstEvent) {
+            data.push(0x90 | channel);
+        }
+        data.push(note.key);
+        data.push(note.velocity);
+        return data;
+    }
+
+    createNoteTrack(midiTrackModel: MidiTrackModel): number[] {
+        const data: number[] = [];
+        if(midiTrackModel.name) {
+            data.push(...this.createTextEvent(3, midiTrackModel.name));
+        }
+        //Event without delta time
+        data.push(0);
+        //Program change
+        data.push(0xc0 | midiTrackModel.channel);
+        data.push(midiTrackModel.instrument);
+        midiTrackModel.events.forEach((value, index) =>
+            data.push(...this.createNoteEvent(midiTrackModel.channel, index === 0, value)));
+        return this.createMidiTrack(data);
+    }
+
     createMidiFileHeader(midiFileModel: MidiFileModel): number[] {
         const data: number[] = [];
         data.push(...this.intToOctets(midiFileModel.format, 8, 2));
@@ -109,6 +135,7 @@ export class MidiFileService {
         const data: number[] = [];
         data.push(...this.createMidiFileHeader(midiFileModel));
         data.push(...this.createMetaTrack(midiFileModel));
+        midiFileModel.tracks.forEach( track => data.push(...this.createNoteTrack(track)));
         return new Blob([new Uint8Array(data)], {type: 'audio/midi'});
     }
 }
