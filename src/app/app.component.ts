@@ -34,12 +34,12 @@ export class AppComponent implements OnInit {
         instrument: MidiInstrument.PIANO,
         channel: 2,
         events: [
-          { delta: 0, key: 108, velocity: 200 },
-          { delta: 48, key: 108, velocity: 0 },
-          { delta: 48, key: 110, velocity: 180 },
-          { delta: 96, key: 110, velocity: 0 },
-          { delta: 96, key: 112, velocity: 160 },
-          { delta: 144, key: 112, velocity: 0 },
+          { delta: 0, key: 48, velocity: 100 },
+          { delta: 48, key: 48, velocity: 0 },
+          { delta: 0, key: 52, velocity: 80 },
+          { delta: 48, key: 52, velocity: 0 },
+          { delta: 0, key: 55, velocity: 60 },
+          { delta: 48, key: 55, velocity: 0 },
         ]
       }
     ]
