@@ -80,7 +80,7 @@ export class MidiFileService {
         data.push(0xff);
         //Track End Event
         data.push(0x2f, 0);
-        return this.createChunk('Mtrk', data);
+        return this.createChunk('MTrk', data);
     }
 
     createMetaTrack(midiFileModel: MidiFileModel): number[] {
