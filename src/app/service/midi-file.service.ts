@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import {MidiFileModel} from "./midi-file.model";
+import {MidiFileModel, TimeSignature} from "./midi-file.model";
 
 @Injectable()
 export class MidiFileService {
@@ -34,6 +34,69 @@ export class MidiFileService {
         return chunk;
     }
 
+    createTextEvent(textType: number, text: string): number[] {
+        const data: number[] = [];
+        //Event without delta time
+        data.push(0);
+        //Meta event
+        data.push(0xff);
+        data.push(textType);
+        data.push(text.length);
+        data.push(...this.stringToChars(text));
+        return data;
+    }
+
+    createTimeSignature(timeSignature: TimeSignature) {
+        const data: number[] = [];
+        //Event without delta time
+        data.push(0);
+        //Meta event
+        data.push(0xff);
+        data.push(0x58);
+        data.push(4);
+        data.push(timeSignature.numerator);
+        data.push(timeSignature.denominator);
+        data.push(timeSignature.metronomeTicks);
+        data.push(timeSignature.note32ndToQuarter);
+        return data;
+    }
+
+    createTempo(mysPerQuarter: number) {
+        const data: number[] = [];
+        //Event without delta time
+        data.push(0);
+        //Meta event
+        data.push(0xff);
+        data.push(0x51);
+        data.push(3);
+        data.push(...this.intToOctets(mysPerQuarter, 8, 3));
+        return data;
+    }
+
+    createMidiTrack(data: number[]) {
+        //Event without delta time
+        data.push(0);
+        //Meta event
+        data.push(0xff);
+        //Track End Event
+        data.push(0x2f, 0);
+        return this.createChunk('Mtrk', data);
+    }
+
+    createMetaTrack(midiFileModel: MidiFileModel): number[] {
+        const data: number[] = [];
+        if(midiFileModel.name) {
+            data.push(...this.createTextEvent(3, midiFileModel.name));
+        }
+        if(midiFileModel.timeSignature) {
+            data.push(...this.createTimeSignature(midiFileModel.timeSignature))
+        }
+        if(midiFileModel.speed) {
+            data.push(...this.createTempo(midiFileModel.speed));
+        }
+        return this.createMidiTrack(data);
+    }
+
     createMidiFileHeader(midiFileModel: MidiFileModel): number[] {
         const data: number[] = [];
         data.push(...this.intToOctets(midiFileModel.format, 8, 2));
@@ -45,6 +108,7 @@ export class MidiFileService {
     createMidiFile(midiFileModel: MidiFileModel): Blob {
         const data: number[] = [];
         data.push(...this.createMidiFileHeader(midiFileModel));
+        data.push(...this.createMetaTrack(midiFileModel));
         return new Blob([new Uint8Array(data)], {type: 'audio/midi'});
     }
 }

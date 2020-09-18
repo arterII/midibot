@@ -20,7 +20,13 @@ export class AppComponent implements OnInit {
     speed: 500000,
     format: 1,
     deltaTimeTicks: 46,
-    numberOfTracks: 1
+    numberOfTracks: 1,
+    timeSignature: {
+      numerator: 4,
+      denominator: 2,
+      metronomeTicks: 46,
+      note32ndToQuarter: 8
+    }
   };
 
   get download(): SafeUrl {
