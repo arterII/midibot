@@ -2,15 +2,21 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {MidibotArrangerComponent} from "./midibot-arranger.component";
-import {MidiFileService} from "../../service/midi-file-service/midi-file.service";
-import {MidiFileServiceModule} from "../../service/midi-file-service/midi-file-service.module";
+import {MidiFileServiceModule} from "../../service/midi-file/midi-file-service.module";
+import {MidibotServiceModule} from "../../service/midibot/midibot-service.module";
+import {CommonModule} from "@angular/common";
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, MidiFileServiceModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    CommonModule,
+    MidiFileServiceModule,
+    MidibotServiceModule
+  ],
   declarations: [MidibotArrangerComponent],
   exports: [
     MidibotArrangerComponent
   ],
-  providers: [MidiFileService]
 })
 export class MidibotArrangerModule { }

@@ -1,3 +1,10 @@
-<p>
-    <a [href]="download" download="midibot.midi">Download Midi</a>
-</p>
+
+<h3>Patterns:</h3>
+<div *ngFor="let pattern of demoPatterns">
+    <a href="#" (click)="createMidiDownloadForPattern(pattern.id)" >{{pattern.name}}</a>
+</div>
+
+<h3>PatternSets:</h3>
+<div *ngFor="let patternSet of demoPatternSets">
+    <a href="#" (click)="createMidiDownloadForPatternSet(patternSet.id)">{{patternSet.name}}</a>
+</div>

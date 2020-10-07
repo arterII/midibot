@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import {MidiFileModel, MidiNoteEvent, MidiTrackModel, TimeSignature} from "./midi-file.model";
+import {AbsoluteNoteEvent, MidiFileModel, MidiNoteEvent, MidiTrackModel, TimeSignature} from "./midi-file.model";
 
 @Injectable()
 export class MidiFileService {
@@ -137,6 +137,37 @@ export class MidiFileService {
         data.push(...this.createMetaTrack(midiFileModel));
         midiFileModel.tracks.forEach( track => data.push(...this.createNoteTrack(track)));
         return new Blob([new Uint8Array(data)], {type: 'audio/midi'});
+    }
+
+    translateAbsoluteEvents(track: MidiTrackModel): MidiTrackModel {
+        const events = track.absoluteEvents.sort((a,b) => a.start - b.start);
+        const newEvents: AbsoluteNoteEvent[] = [];
+        events.forEach( event => {
+            newEvents.push(event);
+            newEvents.push({
+                ...event,
+                start: event.start + event.length,
+                velocity: 0
+            });
+        })
+        const allevents = newEvents.sort((a,b) => a.start - b.start);
+        console.log('Translate: ', allevents);
+        let currentPos = 0;
+        const relativeevents: MidiNoteEvent[] = allevents.map( event => {
+                const ret: MidiNoteEvent = {
+                    delta: event.start - currentPos,
+                    key: event.key,
+                    velocity: event.velocity,
+                }
+                currentPos = event.start;
+                return ret;
+            }
+        )
+        console.log('Translated: ', relativeevents);
+        return {
+            ...track,
+            events: relativeevents
+        }
     }
 }
 
