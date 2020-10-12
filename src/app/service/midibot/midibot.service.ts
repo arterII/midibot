@@ -28,7 +28,8 @@ export class MidibotService {
         const midi: MidiFileModel = {
             ...defaultMidiFileModel,
             tracks,
-            numberOfTracks: tracks.length+1
+            numberOfTracks: tracks.length+1,
+            speed: this.tempo2Speed(song.tempo)
         }
         return midi;
     }
@@ -201,5 +202,9 @@ export class MidibotService {
             }
         }
         return ret;
+    }
+
+    private tempo2Speed(tempo: number): number {
+        return Math.round(60/tempo*1000000);
     }
 }

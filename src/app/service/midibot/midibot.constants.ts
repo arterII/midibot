@@ -224,7 +224,7 @@ export const patternBassPush: Pattern = {
     name: 'Bass Push',
     length: MeasureLength.fourquarter,
     defaultInstrument: MidiInstrument.BASS,
-    pC: ['-1e 0s -1e 0s -1s 0s 0q -1E 0s'],
+    pC: ['-1e 0s -1e 0s -1s 0s1v50 0q -1E 0s1v50'],
 }
 
 export const patternLeadPush: Pattern = {
@@ -232,8 +232,43 @@ export const patternLeadPush: Pattern = {
     name: 'Lead Push',
     length: MeasureLength.fourquarter,
     defaultInstrument: MidiInstrument.PIANO,
-    pC: ['0s 0E3 -1s6'],
+    pC: ['0s 0E5'],
 }
+
+export const patternDrumsPush: Pattern = {
+    id: 'DrumsPush',
+    name: 'Drums Push',
+    length: MeasureLength.fourquarter,
+    isDrum: true,
+    defaultInstrument: MidiInstrument.DRUMS,
+    pC: ['-1e 43s -1e 43s 43q -1E 43s', '2x-1q 38q', '8x51e', '4x-1E 51s1v70'],
+}
+
+export const patternBassReggae: Pattern = {
+    id: 'BassRaggae',
+    name: 'Bass Raggae',
+    length: MeasureLength.twoquarter,
+    defaultInstrument: MidiInstrument.BASS,
+    pC: ['0e -1s 0s 1s -1s 2s -1s'],
+}
+
+export const patternDrumsReggae: Pattern = {
+    id: 'DrumsReggae',
+    name: 'Drums Reggae',
+    length: MeasureLength.twoquarter,
+    isDrum: true,
+    defaultInstrument: MidiInstrument.DRUMS,
+    pC: ['2x51e 51s2','43h2','-1H 47q','2x-1q 50q'],
+}
+
+export const patternStrumReggae: Pattern = {
+    id: 'StrumReggae',
+    name: 'Strum Reggae',
+    length: MeasureLength.twoquarter,
+    defaultInstrument: MidiInstrument.GUITAR,
+    pC: ['-1e 0t -1t 0t -1t -1e 0t', '1*', '2*', '-1e 0-1t -1t 0-1t -1t -1e 0-1t', '-1e 0+1t -1t 0+1t -1t -1e 0+1t'],
+}
+
 export const patternDemoSet: PatternSet = {
     id: 'sample-pattern',
     name: 'Pattern sample',
@@ -311,11 +346,39 @@ export const patternSetSplash: PatternSet = {
     ]
 };
 
+export const patternSetReggae: PatternSet = {
+    id: 'pattern-set-reggae',
+    name: 'Reggae',
+    length: MeasureLength.fourquarter,
+    patterns: [
+        {
+            instrument: MidiInstrument.DRUMS,
+            pattern: patternDrumsReggae,
+            octave: 0,
+        },
+        {
+            instrument: MidiInstrument.BASS,
+            pattern: patternBassReggae,
+            octave: 3,
+        },
+        {
+            instrument: MidiInstrument.GUITAR,
+            pattern: patternStrumReggae,
+            octave: 5,
+        },
+    ]
+};
+
 export const patternSetPush: PatternSet = {
     id: 'pattern-set-push',
     name: 'Push',
     length: MeasureLength.fourquarter,
     patterns: [
+        {
+            instrument: MidiInstrument.DRUMS,
+            pattern: patternDrumsPush,
+            octave: 0,
+        },
        {
             instrument: MidiInstrument.BASS,
             pattern: patternBassPush,
@@ -334,11 +397,12 @@ export const patternSetPush: PatternSet = {
     ]
 };
 
-export const patterns: Pattern[] = [pattern8Arp1, pattern1Strum, pattern4Strum1, pattern4Drums1, pattern8Strum1,
+export const defaultPatterns: Pattern[] = [pattern8Arp1, pattern1Strum, pattern4Strum1, pattern4Drums1, pattern8Strum1,
     pattern8Strum2, pattern82MStrum1, pattern82MStrum2, pattern82MStrum3,
     patternDrumsSplash, patternBassSplash, patternLeadSplash,
-    patternBassPush, patternLeadPush];
-export const patternSets: PatternSet[] = [patternSet1, patternSetM21, patternSetSplash, patternSetPush];
+    patternBassPush, patternLeadPush, patternDrumsPush,
+    patternBassReggae, patternDrumsReggae, patternStrumReggae];
+export const defaultPatternSets: PatternSet[] = [patternSet1, patternSetM21, patternSetSplash, patternSetPush, patternSetReggae];
 
 export const chordMajor: ChordType = {
     labelFn: (key: string) => key.toUpperCase(),
@@ -367,6 +431,15 @@ export const chordMinorSeventh: ChordType = {
 
 export const chordTypes: ChordType[] = [chordMajor, chordMinor, chordMajorSeventh, chordMinorSeventh]
 
+export const chordLabelForType = (chordType: string, key: string) => {
+    const tp: ChordType = chordTypes.find(type => type.id === chordType);
+    return tp.labelFn(key);
+}
+
+export const keysForLevel: string[] = [
+    'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'
+]
+
 export const sampleProgression: Progression = {
     id: 'sample-progression',
     chords: [
@@ -376,6 +449,20 @@ export const sampleProgression: Progression = {
         { level: 0, chordType: 'Maj', length: MeasureLength.fourquarter },
     ],
 }
+
+export const sampleProgression2: Progression = {
+    id: 'sample-progression-2',
+    chords: [
+        { level: 0, chordType: 'Maj', length: MeasureLength.fourquarter },
+        { level: 2, chordType: 'Min', length: MeasureLength.fourquarter },
+        { level: 9, chordType: 'Min', length: MeasureLength.fourquarter },
+        { level: 5, chordType: 'Maj', length: MeasureLength.fourquarter },
+        { level: 7, chordType: '7', length: MeasureLength.fourquarter },
+        { level: 0, chordType: 'Maj', length: MeasureLength.fourquarter },
+    ],
+}
+
+export const sampleProgressions: Progression[] = [sampleProgression, sampleProgression2];
 
 export const sampleSequence: Sequence = {
     id: 'sample-sequence',
@@ -390,6 +477,7 @@ export const sampleSong: Song = {
     sequenceIds: [
         'sample-sequence'
     ],
+    tempo: 120,
     patternChanges: [{
         sequenceId: 'sample-sequence',
         patternSetId: 'sample-pattern',

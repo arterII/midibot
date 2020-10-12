@@ -1,12 +1,21 @@
-import {Component, OnInit, VERSION} from '@angular/core';
-import {MidiFileService} from "./service/midi-file/midi-file.service";
-import {MidiFileModel, MidiInstrument} from "./service/midi-file/midi-file.model";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {Component, OnInit} from '@angular/core';
+import {of} from "rxjs";
+import {PatternsFacade} from "./service/patterns/facade/patterns-facade";
 
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  styleUrls: [ './app.component.scss' ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  constructor(
+      private patternsFacade: PatternsFacade
+  ) {
+  }
+  title = 'Midibot';
+  isSidenavOpen$ = of(true);
+
+  ngOnInit(): void {
+    this.patternsFacade.initDefaultPatterns();
+  }
 }

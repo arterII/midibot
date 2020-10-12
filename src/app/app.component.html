@@ -1,1 +1,32 @@
-<arranger></arranger>
+<ng-container *ngIf="{isOpen: isSidenavOpen$ | async} as status">
+    <mat-toolbar>
+    <header>
+        <section class="dlist-section">
+            <div class="dlist-section__inner">
+                <mat-icon (click)="sidenav.toggle()" *ngIf="!status.isOpen">menu</mat-icon>
+                <span class="title">{{title}}</span>
+            </div>
+        </section>
+    </header>
+</mat-toolbar>
+    <mat-sidenav-container>
+
+        <mat-sidenav-content>
+            <main>
+                <router-outlet></router-outlet>
+            </main>
+            <footer>
+
+            </footer>
+        </mat-sidenav-content>
+
+        <mat-sidenav #sidenav [opened]="status.isOpen" [mode]="status.isOpen ? 'side' : 'over'">
+            <mat-nav-list>
+                <a mat-list-item [routerLink]="'/pattern'">Define Patterns</a>
+                <a mat-list-item [routerLink]="'/'">Home </a>
+                <a mat-list-item [routerLink]="'/song'">Create Song</a>
+                <a mat-list-item [routerLink]="'/mixer'">Mix Tracks</a>
+            </mat-nav-list>  </mat-sidenav>
+
+    </mat-sidenav-container>
+</ng-container>

@@ -1,0 +1,22 @@
+<div><h3>Tempo</h3>
+    <mat-slider min="30" max="240" step="5" [formControl]="tempo"></mat-slider><span>{{tempoFormatted$ | async}}</span>
+</div>
+
+<div><h3>Chord Progression</h3>
+<mat-form-field *ngIf="chordProgressions$ | async as progressions">
+    <mat-label>Key</mat-label>
+    <mat-select [formControl]="chordProgression">
+        <mat-option *ngFor="let prog of progressions" [value]="prog.id">{{getProgressionLabel(prog)}}</mat-option>
+    </mat-select>
+</mat-form-field>
+</div>
+
+<h3>Patterns:</h3>
+<div *ngFor="let pattern of availablePatterns$ | async">
+    <a (click)="createMidiDownloadForPattern(pattern.id)" >{{pattern.name}}</a>
+</div>
+
+<h3>PatternSets:</h3>
+<div *ngFor="let patternSet of availablePatternSets$ | async">
+    <a (click)="createMidiDownloadForPatternSet(patternSet.id)">{{patternSet.name}}</a>
+</div>

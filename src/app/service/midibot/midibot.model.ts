@@ -55,7 +55,8 @@ export interface PatternSet {
     id: string,
     name?: string,
     length: number,
-    patterns: PatternSetPart[]
+    patterns: PatternSetPart[],
+    defaultTempo?: number
 }
 
 export interface ChordType {
@@ -98,7 +99,8 @@ export interface Song {
     id: string,
     name?: string,
     sequenceIds: string[],
-    patternChanges: PatternChange[]
+    patternChanges: PatternChange[],
+    tempo: number
 }
 
 export interface SongData {
