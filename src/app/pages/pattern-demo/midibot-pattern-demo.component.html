@@ -13,10 +13,10 @@
 
 <h3>Patterns:</h3>
 <div *ngFor="let pattern of availablePatterns$ | async">
-    <a (click)="createMidiDownloadForPattern(pattern.id)" >{{pattern.name}}</a>
+    <a (click)="downloadForPattern(pattern.id)" >{{pattern.name}}</a>
 </div>
 
 <h3>PatternSets:</h3>
 <div *ngFor="let patternSet of availablePatternSets$ | async">
-    <a (click)="createMidiDownloadForPatternSet(patternSet.id)">{{patternSet.name}}</a>
+    <a (click)="downloadForPatternSet(patternSet.id)">{{patternSet.name}}</a>
 </div>

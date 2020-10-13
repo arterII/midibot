@@ -472,7 +472,7 @@ export const sampleSequence: Sequence = {
      ]
 }
 
-export const sampleSong: Song = {
+export const songTemplate: Song = {
     id: 'sample-song',
     sequenceIds: [
         'sample-sequence'
@@ -489,6 +489,13 @@ export const demoData: SongData = {
     sequences: [sampleSequence],
     progressions: [sampleProgression],
 }
+
+export const demoSong: Song = {
+    ...songTemplate
+}
+
+export const demoSequences: Sequence[] = [sampleSequence];
+export const demoSongs: Song[] = [demoSong];
 
 export const defaultMidiFileModel: MidiFileModel = {
     name: 'Sample',

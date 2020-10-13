@@ -5,6 +5,7 @@ import {MidibotMixerComponent} from "./midibot-mixer.component";
 import {MidiFileServiceModule} from "../../service/midi-file/midi-file-service.module";
 import {MidibotServiceModule} from "../../service/midibot/midibot-service.module";
 import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import {CommonModule} from "@angular/common";
     FormsModule,
     CommonModule,
     MidiFileServiceModule,
-    MidibotServiceModule
+    MidibotServiceModule,
+    RouterModule
   ],
   declarations: [MidibotMixerComponent],
   exports: [

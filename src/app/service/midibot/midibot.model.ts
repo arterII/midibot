@@ -87,6 +87,7 @@ export interface Sequence {
     id: string,
     name?: string,
     sequenceParts: SequencePart[],
+    songId?: string
 }
 
 export interface PatternChange {
