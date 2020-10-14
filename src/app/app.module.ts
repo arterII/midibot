@@ -16,6 +16,7 @@ import {StoreModule} from "@ngrx/store";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {EffectsModule} from "@ngrx/effects";
 import {PatternsModule} from "./service/patterns/patterns.module";
+import {SongsModule} from "./service/songs/songs.module";
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import {PatternsModule} from "./service/patterns/patterns.module";
       logOnly: false
     }),
     EffectsModule.forRoot([]),
-    PatternsModule.forRoot()
+    PatternsModule.forRoot(),
+    SongsModule.forRoot()
   ],
   declarations: [ AppComponent ],
   bootstrap:    [ AppComponent ],

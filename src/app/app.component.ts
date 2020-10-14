@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {of} from "rxjs";
 import {PatternsFacade} from "./service/patterns/facade/patterns-facade";
+import {SongFacade} from "./service/songs/facade/song-facade";
 
 @Component({
   selector: 'my-app',
@@ -9,7 +10,8 @@ import {PatternsFacade} from "./service/patterns/facade/patterns-facade";
 })
 export class AppComponent implements OnInit {
   constructor(
-      private patternsFacade: PatternsFacade
+      private patternsFacade: PatternsFacade,
+      private songFacade: SongFacade,
   ) {
   }
   title = 'Midibot';
@@ -17,5 +19,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.patternsFacade.initDefaultPatterns();
+    this.songFacade.initSampleSongs();
   }
 }

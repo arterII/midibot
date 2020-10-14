@@ -6,7 +6,7 @@ import {
     defaultPatterns,
     defaultPatternSets, demoData, patternCode2Pitch,
     patternDemoSet,
-    sampleProgressions, sampleSequence, sampleSong, songTemplate,
+    sampleProgressions, sampleSequence, songTemplate,
 } from "../../midibot/midibot.constants";
 import {selectAllAvailablePatterns} from "../store/selectors/available-patterns.selector";
 import {initDefaultPatternSetsAction} from "../store/actions/available-pattern-sets.actions";
@@ -55,8 +55,8 @@ export class PatternsFacade {
     }
 
     createMidiDownloadForPatternSet(patterSetSource: PatternSet, tempo: number, chordProgression: Progression) {
-        const songTemplate = { ...sampleSong};
-        songTemplate.tempo = tempo;
+        const song = { ...songTemplate};
+        song.tempo = tempo;
         const patternSet = {
             ...patterSetSource
         };
@@ -69,8 +69,8 @@ export class PatternsFacade {
         })
         const sequence = { ...sampleSequence, id: 'cloned-sequence' };
         sequence.sequenceParts = [ {progressionId: chordProgression.id, repetition: sampleSequence.sequenceParts[0].repetition} ];
-        songTemplate.sequenceIds = [sequence.id];
-        songTemplate.patternChanges = [
+        song.sequenceIds = [sequence.id];
+        song.patternChanges = [
             {
                 sequenceId: sequence.id,
                 patternSetId: patternSet.id
@@ -80,8 +80,8 @@ export class PatternsFacade {
         songData.patternSets = [patternSet];
         songData.sequences = [sequence];
         songData.progressions = [chordProgression];
-        console.log('Song', songTemplate, songData, chordProgression.id);
-        const midifile = this.createSample(songTemplate, songData);
+        console.log('Song', song, songData, chordProgression.id);
+        const midifile = this.createSample(song, songData);
         const midiBlob = this.midiFileService.createMidiFile(midifile);
         this.downloadPattern(midiBlob, this.createMidiFileName(patternSet.id, 'patternset'));
     }

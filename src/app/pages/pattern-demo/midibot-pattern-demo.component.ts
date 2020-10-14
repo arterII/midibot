@@ -1,7 +1,4 @@
 import {Component, OnDestroy, OnInit, VERSION} from '@angular/core';
-import {MidiFileService} from "../../service/midi-file/midi-file.service";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
-import {MidibotService} from "../../service/midibot/midibot.service";
 import {chordLabelForType, keysForLevel, sampleProgression} from "../../service/midibot/midibot.constants";
 import {Pattern, PatternSet, Progression} from "../../service/midibot/midibot.model";
 import {PatternsFacade} from "../../service/patterns/facade/patterns-facade";
